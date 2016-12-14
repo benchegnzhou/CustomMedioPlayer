@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_video_top"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_video_system_status"
+    android:orientation="vertical">
+    <!--系统信息栏-->
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <!--文件名-->
+        <TextView
+            android:id="@+id/tx_video_tittle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="文件名"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+        <!--系统电量-->
+        <ImageView
+            android:id="@+id/iv_video_electric"
+            android:layout_marginTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_battery_40" />
+        <!--系统时间-->
+        <TextView
+            android:id="@+id/tx_video_system_time"
+            android:layout_marginLeft="14dp"
+            android:layout_width="wrap_content"
+            android:text="19:20:54"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+
+    <!--音量控制条-->
+<LinearLayout
+    android:padding="8dp"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:background="@drawable/bg_video_duration_control"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/iv_video_mute"
+        android:layout_width="wrap_content"
+        android:src="@drawable/btn_menu_selector"
+        android:layout_height="wrap_content" />
+
+    <!--自定义seekBar的样式，最简单的方式就是查看系统的源码，然后修改对应的属性-->
+    <!--通过源码可以发现
+    android:thumb="@mipmap/video_progress_thumb"  //拇指按下的图形
+    android:thumbOffset="0dp"   图形的偏移量
+    参考系统样式
+    android:maxHeight="6dp" 可以限定进度条背景的高度
+     style="@android:style/Widget.SeekBar"-->
+    <SeekBar
+        android:id="@+id/sb_video_current_volume"
+        android:layout_marginRight="20dp"
+        style="@android:style/Widget.SeekBar"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:maxHeight="6dp"
+        android:minHeight="6dp"
+        android:thumb="@mipmap/video_progress_thumb"
+        android:thumbOffset="0dp"
+        android:progress="40"
+        android:progressDrawable="@drawable/video_progress_seekbar"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+
+</LinearLayout>

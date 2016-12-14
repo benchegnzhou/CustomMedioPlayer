@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">虾米播放器</string>
+    <string name="main_video">视频</string>
+    <string name="main_music">音乐</string>
+</resources>

@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.itcast.zbc.mediaplayer"
+        minSdkVersion 17
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        debug {
+            //调试模式下打开log日志控制台输出
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            //正式上线时，关闭log打印
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23+'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:design:23.4.0'
+
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.zhy:autolayout:1.4.3'
+    compile files('libs/gson-2.2.1.jar')
+    compile files('libs/jsoup-1.7.3.jar')
+    compile 'org.apache.httpcomponents:httpcore:4.4.4'
+    compile files('libs/Android_Location_V1.3.2.jar')
+    compile 'me.immortalz:transitionhelper:1.0.5'
+}
