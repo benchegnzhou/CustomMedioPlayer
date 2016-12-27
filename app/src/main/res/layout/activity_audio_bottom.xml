@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!--已播放时间-->
+    <TextView
+        android:id="@+id/tv_audio_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:gravity="right"
+        android:text="00:11/00:45"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+    <!--进度条-->
+    <!--播放进度条-->
+    <!--自定义seekBar的样式，最简单的方式就是查看系统的源码，然后修改对应的属性-->
+    <!--通过源码可以发现
+        android:thumb="@mipmap/video_progress_thumb"  //拇指按下的图形
+        android:thumbOffset="0dp"   图形的偏移量
+    参考系统样式
+        android:maxHeight="6dp" 可以限定进度条背景的高度
+        style="@android:style/Widget.SeekBar"
+        android:secondaryProgress="20"第二进度的值
+
+    这里有一个很魔性的东西，就是如果我们实用的是drawable目录下的需要设置宽高
+    如果是mipmap 目录下的资源就要限制宽高
+        android:maxHeight="6dp"
+        android:minHeight="6dp"-->
+    <SeekBar
+        android:id="@+id/sb_audio_current"
+        style="@android:style/Widget.SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progress="40"
+        android:progressDrawable="@drawable/audio_progress_seekbar"
+        android:thumb="@mipmap/audio_seek_thumb"
+        android:thumbOffset="0dp" />
+
+    <!--底部按钮栏-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_audio_playmodle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_playmodle_allrepeat" />
+
+        <ImageView
+            android:id="@+id/iv_audio_pre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_audio_pre" />
+
+        <ImageView
+            android:id="@+id/iv_audio_pause"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_audio_pause" />
+
+        <ImageView
+            android:id="@+id/iv_audio_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_audio_next" />
+
+        <ImageView
+            android:id="@+id/iv_audio_musiclist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/btn_audio_musiclist" />
+
+    </LinearLayout>
+</LinearLayout>

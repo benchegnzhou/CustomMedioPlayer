@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/base_bg"
+    tools:context="com.itcast.zbc.mediaplayer.ui.activity.AudioPlayerActivity">
+    <!--顶部栏-->
+    <include layout="@layout/activity_audio_top" />
+
+    <!--中间部分-->
+    <include layout="@layout/activity_audio_middle"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"/>
+
+    <!--底部栏-->
+    <include layout="@layout/activity_audio_bottom" />
+
+
+</LinearLayout>
