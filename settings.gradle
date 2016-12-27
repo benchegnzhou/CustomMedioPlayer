@@ -1,1 +1,1 @@
-include ':app', ':videotestapp'
+include ':app', ':videotestapp', ':InitActivity'

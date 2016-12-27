@@ -2,10 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-<TextView
-    android:layout_width="match_parent"
-    android:textColor="@color/showmethod_start_color"
-    android:textSize="24sp"
-    android:text="音频界面布局"
-    android:layout_height="match_parent" />
+    <!--使用公共的listview形式用两种，一种是使用style定义，另一种是include的形式-->
+    <include layout="@layout/common_listview" />
 </LinearLayout>

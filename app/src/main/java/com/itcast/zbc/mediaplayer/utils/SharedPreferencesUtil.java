@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
  * SharedPreferencesUtil
  */
 public class SharedPreferencesUtil {
-    private static final String SHARED_PATH = "xiami_music";  //存储路径
+    private static final String SHARED_PATH = "mConfig";  //存储路径
     private static SharedPreferencesUtil instance;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
@@ -53,6 +53,7 @@ public class SharedPreferencesUtil {
 
     public int getIntValue(String key) {
         if (key != null && !key.equals("")) {
+            String ss=key;
             return sp.getInt(key, 0);
         }
         return 0;

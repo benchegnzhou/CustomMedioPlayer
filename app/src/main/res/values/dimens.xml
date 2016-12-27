@@ -2,4 +2,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <!--歌词高亮-->
+    <dimen name="lyrics_tv_heightlight">20sp</dimen>
+    <!--普通歌词的颜色-->
+    <dimen name="lyrics_tv_ordinary">16sp</dimen>
+    <!--歌词行间距-->
+    <dimen name="lyrics_tv_Padding">14dp</dimen>
 </resources>

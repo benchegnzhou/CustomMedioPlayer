@@ -222,7 +222,7 @@ public class VideoView extends SurfaceView implements MediaPlayerControl {
 
         // 初始化自定义的变量
         mContext =context;
-        WindowManager windowManager= (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager= (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
              mScreenW = windowManager.getDefaultDisplay().getWidth();
              mScreenH = windowManager.getDefaultDisplay().getHeight();
     }

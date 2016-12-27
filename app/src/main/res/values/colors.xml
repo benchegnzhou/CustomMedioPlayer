@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="half_white">#66ffffff</color>
     <color name="tittle_green">#31c27c</color>
+    <color name="lyrics_tv_height">#44f055</color>
+    <color name="lyrics_tv_ordinary">#ffffff</color>
 </resources>

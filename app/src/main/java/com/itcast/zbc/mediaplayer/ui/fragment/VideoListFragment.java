@@ -13,16 +13,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.itcast.zbc.mediaplayer.R;
-import com.itcast.zbc.mediaplayer.adapter.CursorListAdapter;
+import com.itcast.zbc.mediaplayer.adapter.VideoCursorListAdapter;
 import com.itcast.zbc.mediaplayer.bean.VideoItem;
 
+import com.itcast.zbc.mediaplayer.common.CommonValue;
 import com.itcast.zbc.mediaplayer.handler.MyAsyncQueryHandler;
 import com.itcast.zbc.mediaplayer.ui.activity.VideoPlayerActivity;
+import com.itcast.zbc.mediaplayer.ui.activity.VitamioPlayerActivity;
 import com.itcast.zbc.mediaplayer.utils.CursorUtils;
-import com.itcast.zbc.mediaplayer.utils.LogUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,12 +38,12 @@ public class VideoListFragment extends BaseFragment {
 
     @Bind(R.id.lv_videolist)
     ListView lvVideolist;
-    private CursorListAdapter cursorListAdapter;
+    private VideoCursorListAdapter cursorListAdapter;
 
     @Override
     protected void initListener() {
         //数据暂时没有，我们就先将cursor设置为null，这种设置值得推荐，这样使用的效率将会更高
-        cursorListAdapter = new CursorListAdapter(getActivity(), null);
+        cursorListAdapter = new VideoCursorListAdapter(getActivity(), null);
         lvVideolist.setAdapter(cursorListAdapter);
         lvVideolist.setOnItemClickListener(new MyOnItemClickListener());
     }
@@ -69,11 +69,11 @@ public class VideoListFragment extends BaseFragment {
         java.lang.String[] selectionArgs,
         java.lang.String orderBy*/
 
-        asyncQueryHandler.startQuery(VIDEO_QUERY, cursorListAdapter, Media.EXTERNAL_CONTENT_URI, new String[]{Media._ID, Media.DATA, Media.SIZE, Media.DURATION, Media.TITLE}, null, null, null);
+        asyncQueryHandler.startQuery(CommonValue.VIDEO_CURSOR_ASYNCQUERY, cursorListAdapter, Media.EXTERNAL_CONTENT_URI, new String[]{Media._ID, Media.DATA, Media.SIZE, Media.DURATION, Media.TITLE}, null, null, null);
 
     }
 
-    private final int VIDEO_QUERY = 666;
+
 
     /**
      * 数据查询
@@ -129,21 +129,19 @@ public class VideoListFragment extends BaseFragment {
 
             //代码多一般的解析都不会放在这里，而是直接的放在been类中
             ArrayList<VideoItem> videoListItems = VideoItem.purseVideoListItem(cursor);
+            Intent intent;
+            if (false) {    //定义一个变量，是不是使用Vitamio作为解码器
+                //将数据传递到播放界面
+                intent = new Intent(getContext(), VideoPlayerActivity.class);
+            } else {
+                intent = new Intent(getContext(), VitamioPlayerActivity.class);
+            }
 
-
-            //将数据传递到播放界面
-            Intent intent = new Intent(getContext(), VideoPlayerActivity.class);
             intent.putExtra("videoListItems", videoListItems);
             intent.putExtra("position", position);
             startActivity(intent);
-
-
         }
     }
-
-
-
-
 
 
 }

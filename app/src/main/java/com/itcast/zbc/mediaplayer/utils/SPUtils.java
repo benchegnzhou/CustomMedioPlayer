@@ -12,7 +12,7 @@ public class SPUtils {
 
     public static void saveBoolean(Context ct, String key, boolean value) {
         if (sp == null)
-            sp = ct.getSharedPreferences(SP_NAME, 0);
+            sp = ct.getSharedPreferences(SP_NAME,ct.MODE_PRIVATE );   //私有权限
         sp.edit().putBoolean(key, value).commit();
     }
 

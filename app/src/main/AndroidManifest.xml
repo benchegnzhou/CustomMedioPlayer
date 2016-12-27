@@ -3,7 +3,7 @@
     package="com.itcast.zbc.mediaplayer">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--监听系统电量的权限-->
+    <!-- 监听系统电量的权限 -->
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="com.dy.yirenyibang.permission.JPUSH_MESSAGE" />
@@ -43,6 +43,10 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
+
+    <!--允许程序写入但不读取用户联系人数据-->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon"
@@ -61,28 +65,34 @@
             </intent-filter>
         </activity>
         <!-- 主界面 -->
-        <activity android:name=".ui.activity.MainActivity" />
-        <!--视频播放界面-->
-        <!--android:screenOrientation="landscape"设置播放界面为横向
-        android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"  设置当前activity全屏-->
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
+        <!-- 视频播放界面 -->
+        <!--
+        android:screenOrientation="landscape"设置播放界面为横向
+        android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"  设置当前activity全屏
+        -->
         <activity
             android:name=".ui.activity.VideoPlayerActivity"
             android:screenOrientation="landscape">
-            <!--添加文件管理器启动视频播放的拦截-->
+
+            <!-- 添加文件管理器启动视频播放的拦截 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!--匹配可以接收流媒体rtsp格式的文件-->
+                <!-- 匹配可以接收流媒体rtsp格式的文件 -->
                 <data android:scheme="rtsp" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <!--匹配可以接收流媒体sdp格式的视频文件-->
+                <!-- 匹配可以接收流媒体sdp格式的视频文件 -->
                 <data android:mimeType="video/*" />
                 <data android:mimeType="application/sdp" />
             </intent-filter>
@@ -92,7 +102,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!--匹配可以接收来自网页http协议的MP4，3dp等格式的格式的视频，需要的话还可以添加-->
+                <!-- 匹配可以接收来自网页http协议的MP4，3dp等格式的格式的视频，需要的话还可以添加 -->
                 <data android:scheme="http" />
                 <data android:mimeType="video/mp4" />
                 <data android:mimeType="video/avi" />
@@ -101,6 +111,52 @@
                 <data android:mimeType="video/3gpp2" />
             </intent-filter>
         </activity>
+        <!--android:configChanges="keyboardHidden|orientation|screenSize" 可以旋转-->
+        <activity
+            android:name=".ui.activity.VitamioPlayerActivity"
+            android:screenOrientation="landscape">
+
+            <!-- 添加文件管理器启动视频播放的拦截 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 匹配可以接收流媒体rtsp格式的文件 -->
+                <data android:scheme="rtsp" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <!-- 匹配可以接收流媒体sdp格式的视频文件 -->
+                <data android:mimeType="video/*" />
+                <data android:mimeType="application/sdp" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- 匹配可以接收来自网页http协议的MP4，3dp等格式的格式的视频，需要的话还可以添加 -->
+                <data android:scheme="http" />
+                <data android:mimeType="video/mp4" />
+                <data android:mimeType="video/avi" />
+                <data android:mimeType="video/3gp" />
+                <data android:mimeType="video/3gpp" />
+                <data android:mimeType="video/3gpp2" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.AudioPlayerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+        />
+
+        <service android:name=".service.AudioService" />
     </application>
 
 </manifest>

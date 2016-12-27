@@ -76,11 +76,6 @@ public class VideoItem implements Serializable {
         while (cursor.moveToNext()) {  //移动获取数据就可以了
             VideoItem item =  VideoItem.purseVideoItem(cursor);
             VideoItem videoItem = new VideoItem();
-            videoItem.setDuration(item.getDuration());
-            videoItem.setTittle(item.getTittle());
-            videoItem.setPath(item.getPath());
-            videoItem.setSize(item.getSize());
-
             list.add(item);
         }
         return list;

@@ -1,6 +1,10 @@
 package com.itcast.zbc.mediaplayer.ui.activity;
 
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -36,13 +40,25 @@ public class MainActivity extends BaseActivity {
     private com.itcast.zbc.mediaplayer.adapter.listViewPagerAdapter listViewPagerAdapter;
     private List<Fragment> fragmentList;
 
+    private static final int PERMISSION_READ_EXTERNAL_STORAGE=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+
+    // 对应6.0 查询网络读写权限，如果没有权限暂时让程序卡在这里，防止崩溃
+    if(queryReadExternalPermission()){
         //子类初始化完成调用父类
         doNext();
+    }
+
+
+
+
+
 
     }
 
@@ -51,7 +67,14 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     protected void otherOnClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.tv_Video:
+                vpList.setCurrentItem(0);
+                break;
+            case R.id.tv_music:
+                vpList.setCurrentItem(1);
+                break;
+        }
     }
 
 
@@ -61,12 +84,18 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     protected void initListener() {
+
         fragmentList = new ArrayList<>();
         listViewPagerAdapter = new listViewPagerAdapter(getSupportFragmentManager(), fragmentList);
         if (listViewPagerAdapter != null) {
             vpList.setAdapter(listViewPagerAdapter);
         }
 
+        //标题点击监听
+        tvVideo.setOnClickListener(this);
+        tvMusic.setOnClickListener(this);
+
+        //页面滑动监听
         vpList.setOnPageChangeListener(new pagerChangeListener());
 
     }
@@ -89,7 +118,7 @@ public class MainActivity extends BaseActivity {
         //更新指示器的宽度
         int sreenWith = getWindowManager().getDefaultDisplay().getWidth();
         int indicateWith = sreenWith / fragmentList.size();
-        lineTittle.getLayoutParams().width=indicateWith;
+        lineTittle.getLayoutParams().width = indicateWith;
         lineTittle.requestLayout(); //请求系统重新测量摆放
 
     }
@@ -161,5 +190,86 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     *  * 6.0设备网络权限请求
+     * 这里是sd卡权限请求
+     * @return {     返回 true: 表示这个网络权限已经申请过了 返回： false 表示这个权限没有申请过}
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    private boolean queryReadExternalPermission() {
+        boolean hadReadExternalPermission=false;
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){   //android 系统版本6.0一下的不用执行权限判断
+            return true;
+        }
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            LogUtil.e(this.getClass(), "READ permission IS NOT granted...");
+            // 没有对应权限，权限请求带代码
+            requestReadExternalPermission();
+        } else {
+            LogUtil.e(this.getClass(), "READ permission is granted...");
+            hadReadExternalPermission=true;
+        }
+        return hadReadExternalPermission;
+    }
+
+
+
+    /**
+     * 对应权限的申请代码实体
+     */
+    @TargetApi(Build.VERSION_CODES.M)
+    public void requestReadExternalPermission(){
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            LogUtil.e(this.getClass(), "READ permission IS NOT granted...");
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                LogUtil.e(this.getClass(), "11111111111111");
+            } else {
+                // 0 是自己定义的请求coude
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READ_EXTERNAL_STORAGE);
+                LogUtil.e(this.getClass(), "222222222222");
+            }
+        } else {
+            LogUtil.e(this.getClass(), "READ permission is granted...");
+        }
+    }
+
+    /**
+     * 权限申请成功后的回调
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        LogUtil.e(this.getClass(), "requestCode=" + requestCode + "; --->" + permissions.toString()
+                + "; grantResult=" + grantResults.toString());
+        switch (requestCode) {
+            case PERMISSION_READ_EXTERNAL_STORAGE: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted
+                    // request successfully, handle you transactions
+
+
+                    //子类初始化完成调用父类
+                    doNext();
+                } else {
+
+                    // permission denied
+                    // request failed
+                }
+                return;
+            }
+            default:
+                break;
+
+        }
+    }
 
 }

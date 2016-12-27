@@ -3,8 +3,10 @@ package com.itcast.zbc.mediaplayer.handler;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.widget.CursorAdapter;
 
-import com.itcast.zbc.mediaplayer.adapter.CursorListAdapter;
+import com.itcast.zbc.mediaplayer.adapter.VideoCursorListAdapter;
+import com.itcast.zbc.mediaplayer.common.CommonValue;
 import com.itcast.zbc.mediaplayer.utils.CursorUtils;
 
 /**
@@ -31,7 +33,8 @@ public class MyAsyncQueryHandler extends AsyncQueryHandler {
     @Override
         protected void onQueryComplete(int token, Object cookie, Cursor cursor) {
             super.onQueryComplete(token, cookie, cursor);
-        CursorListAdapter mAdapter = (CursorListAdapter) cookie;  //控件还原
+
+        CursorAdapter mAdapter = (CursorAdapter) cookie;  //控件还原
         CursorUtils.printCursor(MyAsyncQueryHandler.class,cursor);
         mAdapter.swapCursor(cursor);    //相当于  notifyDataSetInvalidated();  替换原有的cursor   其实底层调用的还是   notifyDataSetInvalidated();这个方法
         }

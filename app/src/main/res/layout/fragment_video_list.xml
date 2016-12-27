@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<ListView
-    android:id="@+id/lv_videolist"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--使用公共的listview形式用两种，一种是使用style定义，另一种是include的形式-->
+    <include layout="@layout/common_listview" />
 </LinearLayout>
