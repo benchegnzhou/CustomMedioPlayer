@@ -36,6 +36,7 @@ import com.itcast.zbc.mediaplayer.bean.VideoItem;
 import com.itcast.zbc.mediaplayer.utils.DateUtils;
 import com.itcast.zbc.mediaplayer.utils.LogUtil;
 import com.itcast.zbc.mediaplayer.utils.ToastUtil.ToastUtil;
+import com.itcast.zbc.mediaplayer.utils.meidiacontrolutile.MediaUtil;
 
 
 import java.io.File;
@@ -146,6 +147,11 @@ public class VitamioPlayerActivity extends BaseActivity {
         //此两段代码必须设置在setContentView()方法之前
         setContentView(R.layout.activity_vitamio_player);
         ButterKnife.bind(this);
+
+
+        //检测音乐是不是后台播放，如果播放暂停音乐
+        MediaUtil.controlMusicStatus(this,true);
+
 
         doNext();
     }
@@ -504,6 +510,9 @@ public class VitamioPlayerActivity extends BaseActivity {
         unregisterReceiver(broadcastReceiver);
         //handler使用完成后会内存泄漏，应该在界面销毁的时候移除
         handler.removeCallbacksAndMessages(null);// // 参数为null时会清除所有消息。
+
+        //检测音乐播放的状态是不是被打断，如果是回复播放状态
+        MediaUtil.controlMusicStatus(this,false);
     }
 
 

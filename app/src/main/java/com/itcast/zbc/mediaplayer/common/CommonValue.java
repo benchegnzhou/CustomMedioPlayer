@@ -28,6 +28,11 @@ public class CommonValue {
      */
     public static final  String BOADCAST_MUSICPREPERA = "com.bencheng.musicprepare";
 
+    /**
+     * 视频播放时候请求音乐暂停
+     */
+    public static final  String BOADCAST_REQUESTMUSICSTOP = "com.bencheng.musicstopbyvideo";
+
 
 
 }

@@ -5,7 +5,10 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 
@@ -14,6 +17,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.itcast.zbc.mediaplayer.R;
@@ -23,6 +27,7 @@ import com.itcast.zbc.mediaplayer.ui.activity.AudioPlayerActivity;
 import com.itcast.zbc.mediaplayer.utils.LogUtil;
 import com.itcast.zbc.mediaplayer.utils.SharedPreferencesUtil;
 import com.itcast.zbc.mediaplayer.utils.ToastUtil.ToastUtil;
+import com.itcast.zbc.mediaplayer.utils.meidiacontrolutile.MediaUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,7 +42,7 @@ import java.util.Random;
 public class AudioService extends Service {
 
     //初始化当前播放歌曲的位置为 -1
-    private int currentPosition=-1;
+    private int currentPosition = -1;
     private ArrayList<AudioItem> audioItems;
     private MediaPlayer mediaPlayer;
     private Serializable serializable;
@@ -83,6 +88,9 @@ public class AudioService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //同步音乐服务的全局管理状态
+        MediaUtil.setIsMusicServiceLive(true);
+
         if (intent == null) {   //解决手动结束进程服务崩溃
             return super.onStartCommand(intent, flags, startId);
         }
@@ -110,26 +118,64 @@ public class AudioService extends Service {
                 }
                 audioItems = (ArrayList<AudioItem>) serializable;
                 //处理列表页选中同一首正在播放的歌曲的问题
-                if(position==currentPosition){
+                if (position == currentPosition) {
                     //选中的歌曲正在播放，不做任何的处理直接的刷新界面
                     audioBinder.notifyAudioPlayerListener();
-                }else {
+                } else {
                     // 选中的歌曲和当前播放的歌曲不是同一首歌，刷新位置直接播放
-                    currentPosition=position;
+                    currentPosition = position;
                     audioBinder.playCurrentMusic();
                 }
 
 
                 break;
         }
+        //注册广播解决，音乐播放和视频播放冲突的问题
+        registBroadcast();
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private BroadcastReceiver myRequestReceiver;
+
+    /**
+     * 注册广播解决视频和音乐同步播放的冲突
+     * 音乐避让视频广播功能增加
+     * 在播放视频的时候，如果后台音乐正在播放，将会暂停音乐，视频播放完成重新播放音乐
+     */
+    private void registBroadcast() {
+
+        //广播注册
+        IntentFilter filterPrepare = new IntentFilter(CommonValue.BOADCAST_REQUESTMUSICSTOP);
+        myRequestReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean isVideoPlaying = intent.getBooleanExtra("isVideoPlaying", false);
+                boolean StopMusic_flag = intent.getBooleanExtra("StopMusic_flag", false);
+                //LogUtil.e("isVideoPlaying:___" + isVideoPlaying + "___StopMusic_flag___" + StopMusic_flag);
+                //收到状态信息后，判断  ----当前歌曲播放且视频播放-------暂停音乐
+                //                      ----当前歌曲暂停且视频退出且暂停控制位为true ----- 音乐恢复播放
+                if (mediaPlayer != null && mediaPlayer.isPlaying() && isVideoPlaying) {
+                    audioBinder.changPauseStatus(false);
+                    MediaUtil.setStopMusic_flag(true);  //重置音乐避让控制位
+                } else if (mediaPlayer != null && !mediaPlayer.isPlaying() && !isVideoPlaying && StopMusic_flag) {
+                    audioBinder.changPauseStatus(false);
+                }
+
+
+            }
+        };
+        registerReceiver(myRequestReceiver, filterPrepare);
     }
 
 
     @Override
     public void onDestroy() {
         audioBinder.hiddenNotification();   //当服务进程被杀死的时候要取消通知栏消息，否则空指针
+        //音乐避让广播注销
+        if (myRequestReceiver != null) {
+            unregisterReceiver(myRequestReceiver);
+        }
         LogUtil.e("进程结束");
         super.onDestroy();
     }
@@ -324,8 +370,8 @@ public class AudioService extends Service {
         /**
          * 手动调用资源加载完成回调，为播放器界面初始化数据
          */
-        public  void notifyAudioPlayerListener(){
-            if(onAudioPreparedListener==null){  //空指针检查
+        public void notifyAudioPlayerListener() {
+            if (onAudioPreparedListener == null) {  //空指针检查
                 return;
             }
             onAudioPreparedListener.onPrepared(mediaPlayer);
@@ -345,7 +391,6 @@ public class AudioService extends Service {
                 AudioItem audioItem = audioItems.get(currentPosition);
                 intent.putExtra("audioItem", audioItem);
                 sendBroadcast(intent);
-
             }
         }
 
@@ -459,7 +504,7 @@ public class AudioService extends Service {
                     .setSmallIcon(R.mipmap.notification_music_playing)
                     .setContent(getVontentView())
                     .setOngoing(true)  //设置通知消息不可移除
-                    .setDefaults(Notification.DEFAULT_LIGHTS )   // | Notification.DEFAULT_SOUND
+                    .setDefaults(Notification.DEFAULT_LIGHTS)   // | Notification.DEFAULT_SOUND
                     //.setVibrate(new long[] {0,300,500,700})  //自定义震动  实现效果：延迟0ms，然后振动300ms，在延迟500ms，接着在振动700ms。
                     .getNotification();
             return noti;

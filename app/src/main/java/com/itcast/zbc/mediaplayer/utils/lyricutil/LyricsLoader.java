@@ -17,24 +17,43 @@ public class LyricsLoader {
      *
      * @return
      */
-    public static File LoadLrcFile(String tittleName) {
+    public static File LoadLrcFile(String tittleName,String artist) {
         //与我们存放歌曲和歌词相关的跟目录
-        File rootFile = new File(Environment.getExternalStorageDirectory(), "/music/");
+        File rootFile = new File(Environment.getExternalStorageDirectory(), "/");
         //在本地根目录查找 .lrc 和 .txt 文件
-        File file = new File(rootFile, tittleName + ".lrc");
+        File file = new File(rootFile,"music/"+ tittleName + ".lrc");
         if (file.exists()) {
             return file;
         }
-        file = new File(rootFile, tittleName + ".txt");
+        file = new File(rootFile, "music/"+tittleName + ".txt");
         if (file.exists()) {
             return file;
         }
         //在本地lrc文件目录查找 .lrc 和 .txt 文件
-        file = new File(rootFile, "lrc/" + tittleName + ".lrc");
+        file = new File(rootFile, "music/lrc/" + tittleName + ".lrc");
         if (file.exists()) {
             return file;
         }
-        file = new File(rootFile, "lrc/" + tittleName + ".txt");
+        file = new File(rootFile, "music/lrc/" + tittleName + ".txt");
+        if (file.exists()) {
+            return file;
+        }
+
+        //在目录Musiclrc
+        file = new File(rootFile, "Musiclrc/" + artist+"-"+tittleName + ".lrc");
+        if (file.exists()) {
+            return file;
+        }
+        file = new File(rootFile, "Musiclrc/" + artist+"-"+ tittleName + ".txt");
+        if (file.exists()) {
+            return file;
+        }
+        //在目录
+        file = new File(rootFile, "Musiclrc/" +tittleName + ".lrc");
+        if (file.exists()) {
+            return file;
+        }
+        file = new File(rootFile, "Musiclrc/" + tittleName + ".txt");
         if (file.exists()) {
             return file;
         }

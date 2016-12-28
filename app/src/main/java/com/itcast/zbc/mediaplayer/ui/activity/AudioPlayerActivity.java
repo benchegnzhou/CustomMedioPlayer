@@ -371,7 +371,7 @@ public class AudioPlayerActivity extends BaseActivity {
      * 每一次歌曲切换需要重新设置歌词
      */
     private void loadLyricFile() {
-        ArrayList<LyricBeen> lyricList = LyricParse.parseFile(LyricsLoader.LoadLrcFile(audioItem.getTittle()));
+        ArrayList<LyricBeen> lyricList = LyricParse.parseFile(LyricsLoader.LoadLrcFile(audioItem.getTittle(),audioItem.getArtist()));
         lrcvAudio.setLyricList(lyricList);
         for (int i = 0; i < lyricList.size(); i++) {
             LogUtil.e(lyricList.toString());
